@@ -177,6 +177,7 @@ class AuthentificationController extends Controller
 }
 ```
 langkah pertama yang di lakukan adalah melakukan adalah mengakses endpoint login, pada bagian header akan menggirimkan *Accept*, sedangkan pada bagian body nya kita akan menggirimkan email dan password, untuk lebih jelas nya lihat gambar berikut:
+<br>
 Gambar header
 <img src="https://i.ibb.co/0qLqTZm/image.png" alt="Gambar Header">
 Gambar body
