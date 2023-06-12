@@ -19,8 +19,6 @@ class AuthentificationController extends Controller
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
-
         return $user->createToken('user login')->plainTextToken;
-           
     }
 }

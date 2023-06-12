@@ -136,5 +136,76 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 ```
 
+### cara akses api
+untuk mengakses api yang menggunakan laravel sanctume kita perlu menambahkan beberapa item di bagian header seperti gambar berikut ini:
+<img src="https://i.ibb.co/P5rXpsc/authorization-header.png" alt="gambar header">
+
+jadi kita perlu menggirimkan pada bagian header *Accept* dan *Authorization*;
+- **Accept** : application/json   
+- **Authorization** : **Bearer** Token
+
+Untuk bagian token didapatkan ketika proses login, diwebsite laravel sudah di jelaskan bagaimana cara membuat function login bisa di baca [disini](https://laravel.com/docs/10.x/sanctum#issuing-mobile-api-tokens)
+
+### proses login
+untuk proses login alur nya akan sebagai berikut:
+- buat route untuk mengatur end point login dan buat controller untuk menghandle semua authorization
+Route
+```
+Route::post('/login', [AuthentificationController::class, 'login']);
+```
+Controller
+```
+namespace App\Http\Controllers;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+class AuthentificationController extends Controller
+{
+    function Login(Request $request){
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+        $user = User::where('email', $request->email)->first();
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+        return $user->createToken('user login')->plainTextToken;
+    }
+}
+```
+langkah pertama yang di lakukan adalah melakukan adalah mengakses endpoint login, pada bagian header akan menggirimkan *Accept*, sedangkan pada bagian body nya kita akan menggirimkan email dan password, untuk lebih jelas nya lihat gambar berikut:
+Gambar header
+<img src="https://i.ibb.co/0qLqTZm/image.png" alt="Gambar Header">
+Gambar body
+<img src="https://i.ibb.co/GFDttvK/image.png" alt="Gambar Header">
+
+Dalam function login ada beberapa hal yang di lakukan yaitu:
+- melakukan validasi data
+```
+ $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+```
+- melakukan check pada email apakan tersedia atau tidak
+```
+ $user = User::where('email', $request->email)->first();
+```
+- melakukan if yang memiliki fungsi mengecek kondisi user atau check password post dan password yang ada di dalam db, jika kondisi tida terpenuhi akan mengembalikan *throw*
+```
+  if (! $user || ! Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+```
+- jika kondisi terpenuhi maka akan mengembalikan isi token, dalam function createToken harus berisi nama dari token nya
+```
+ return $user->createToken('user login')->plainTextToken;
+```
+
 
 
