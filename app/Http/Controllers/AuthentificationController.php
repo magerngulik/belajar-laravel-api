@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthentificationController extends Controller
 {
-    function Login(Request $request){
+    function login(Request $request){
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
@@ -20,5 +20,9 @@ class AuthentificationController extends Controller
             ]);
         }
         return $user->createToken('user login')->plainTextToken;
+    }
+
+    function logout(Request $request){
+        $request->user()->currentAccessToken()->delete();
     }
 }

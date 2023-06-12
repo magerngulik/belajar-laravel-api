@@ -217,6 +217,22 @@ hasil dari function akan mendapatkan token, token ini yang akan digunakan untuk 
 
 dibagian menggunakan token pada bagian *authorization* untuk value harus menggunakan kata kunci *Bearer* + token seperti contoh *Bearer 1|Jc2Rf9iJC0FmJSjF1e8QLkKVSQ5Frme1Ihe8pdoe*      
 
+## Authentification Logout
+- buat dulu route dan hubungkan dengan controller auth, jangan lupa gunakan middleware auth dari laravel sanctum
+```
+Route::post('/logout', [AuthentificationController::class, 'logout'])->middleware('auth:sanctum');
+```
+- buat sebuah function logout di dalam controller authentification, yang akan menerima request dari user
+```
+ function logout(Request $request){
+        $request->user()->currentAccessToken()->delete();
+    }
+```
+dalam fungsi akan mengambil file dari header berupa token, dan akan melakukan remove ke token yang sedang di gunakan.
+fungsi ini sendiri adalah bawaan dari laravel sanctum, untuk dokumentasi nya dapat di lihat [disini](https://laravel.com/docs/10.x/sanctum#revoking-tokens)
+
+- langkah selanjutnya adalah melakukan request dari sisi user, request ini mengunakan method get dan hanya menggirimkan accept dan authorization berupa token yang berfungsi untuk melakukan revoking pada token yang sedang di akses, contoh nya sebagai berikut:
+<img src="https://i.ibb.co/C7swVP1/image.png" alt="Contoh reques dari logout">
 
 
 
