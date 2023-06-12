@@ -7,11 +7,12 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-### video ke 3
+### Pembahasan video ke 3
 
 pada video [ketiga](https://www.youtube.com/watch?v=NEhPRiYPmkI&list=PLnrs9DcLyeJSfhHHbze8NfaHFh55HNBSh&index=3) beberapa materi sebagai berikut:
-- belajar tentang [api resources](https://laravel.com/docs/10.x/eloquent-resources) yang akan memberikan fungsi untuk mempermudah proses pembuatan response api
+belajar tentang [api resources](https://laravel.com/docs/10.x/eloquent-resources) yang akan memberikan fungsi untuk mempermudah proses pembuatan response api
 untuk membuat response api biasa nya seperti:
+
 ```
 public function index(){
         $data = ["data" => Post::all(),];
@@ -53,3 +54,66 @@ class PostResource extends JsonResource
     }
 }
 ```
+
+pada penjelasan di atas menjelaskan tentang melakukan request get untuk menggambil sebuah data secara keseluruhan, bagaimana cara untuk menggambil single data dan mengembalikan response nya. berikut ini merupakan langkah langkah nya:
+
+
+**Bagian Route**
+```
+Route::get('/posts2/{id}', [PostController::class, 'show2']);
+```
+**Bagian Controller yang menggunakan relasi**
+```   
+public function show($id){
+        $post = Post::with('writter:id,username')->findOrFail($id);
+        return  new PostDetailResorce($post);
+    }
+```
+
+
+**Bagian Controller yang tidak menggunakan relasi**
+```      
+public function show2($id){
+        $post = Post::findOrFail($id);
+        return  new PostDetailResorce($post);
+}
+```
+
+untuk bagian ini memiliki relasi ke tabel user, jadi untuk return data di harapkan memiliki nama author, ini akan memiliki masalah ketika menggunakan *api resource* yang sama akan membalikan semua data sementara data itu mungkin tidak di perlukan untuk mengatasi hal tersebut maka perlu di lakukan *eager loading* untuk menggunakan nya sebagai berikut:
+
+**Bagian Resources**
+```
+class PostDetailResorce extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request): array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'news_content' => $this->title,
+            'created_at' => date('d-m-Y H:i:s', strtotime($this->created_at)),
+            'author' => $this->user_id,
+            'writter' => $this->whenLoaded('writter') 
+        ];
+    }
+}
+```
+Dari koding di atas penggunaan *eager loading*  ada pada baris ini **'writter' => $this->whenLoaded('writter')** jadi bagian ini hanya akan di jalankan ketia ada relasi ke tabel user dengan kode **Post::with('writter:id,username')->findOrFail($id);**, kode ini melakukan relasi ke tabel user yang hanya mengembalikan data berupa id dan username. untuk koding relasi nya pada bagian model seperti berikut:
+**kode relasi**
+
+```
+ public function writter(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+```
+
+
+
+
+
