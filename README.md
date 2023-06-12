@@ -208,5 +208,16 @@ Dalam function login ada beberapa hal yang di lakukan yaitu:
  return $user->createToken('user login')->plainTextToken;
 ```
 
+hasil dari function akan mendapatkan token, token ini yang akan digunakan untuk membuka akses yang sebelum nya di block oleh laravel sanctum
+**Sebelum menggunakan token**
+<img src="https://i.ibb.co/nR4jmsX/image.png" alt="Gambar header sebelum menggunakan item">
+
+**Sesudah menggunakan token**
+<img src="https://i.ibb.co/568CNg9/image.png" alt="Gambar header susudah menggunakan token">
+
+dibagian menggunakan token pada bagian *authorization* untuk value harus menggunakan kata kunci *Bearer* + token seperti contoh *Bearer 1|Jc2Rf9iJC0FmJSjF1e8QLkKVSQ5Frme1Ihe8pdoe*      
+
+
+
 
 
