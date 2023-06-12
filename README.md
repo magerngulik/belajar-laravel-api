@@ -103,17 +103,38 @@ class PostDetailResorce extends JsonResource
     }
 }
 ```
-Dari koding di atas penggunaan *eager loading*  ada pada baris ini **'writter' => $this->whenLoaded('writter')** jadi bagian ini hanya akan di jalankan ketia ada relasi ke tabel user dengan kode **Post::with('writter:id,username')->findOrFail($id);**, kode ini melakukan relasi ke tabel user yang hanya mengembalikan data berupa id dan username. untuk koding relasi nya pada bagian model seperti berikut:
+Dari koding di atas penggunaan *eager loading*  ada pada baris ini **'writter' => $this->whenLoaded('writter')** jadi bagian ini hanya akan di jalankan ketia ada relasi ke tabel user dengan kode **Post::with('writter:id,username')->findOrFail($id)**, kode ini melakukan relasi ke tabel user yang hanya mengembalikan data berupa *id dan username*. untuk koding relasi nya pada bagian model seperti berikut:
 **kode relasi**
 
 ```
- public function writter(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
+public function writter(): BelongsTo
+{
+    return $this->belongsTo(User::class, 'user_id', 'id');
+}
 ```
 
+# Penjelasan [Video ke4](https://www.youtube.com/watch?v=AgkKLIPTmIg&list=PLnrs9DcLyeJSfhHHbze8NfaHFh55HNBSh&index=4)
+pada video ini akan menggunakan authentification dengan [laravel sanctum](https://laravel.com/docs/10.x/sanctum), beberapa fiture yang dapat di buat adalah login, get token dan logout, untuk langkah langkah nya sebagai berikut:
 
+install laravel sanctum dari composer 
+```
+composer require laravel/sanctum
+```
+Jika menggunakan versi laravel terbaru laravel sudah tersedia laravel sanctum
+
+### konfigurasi route
+untuk melakukan konfigurasi route pada laravel sanctum kita memerlukan akses ke _middleware_ seperti berikut ini: 
+```
+Route::get('/posts', [PostController::class, 'index'])->middleware('auth:sanctum');
+Route::get('/posts/{id}', [PostController::class, 'show'])->middleware(['auth:sanctum']);
+```
+untuk dokumentasi dari setup route di sanctume bisa di akses [disini](https://laravel.com/docs/10.x/sanctum#protecting-spa-routes), sedikit catatan dalam dokumentasi fungsi dari request dan penggunaan route posisi nya bisa di bagian belakang atau depan, ada perbedaan tapi fungsi dasar nya sama berikut contoh nya:
+
+```
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+```
 
 
 
