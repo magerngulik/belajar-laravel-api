@@ -213,7 +213,7 @@ hasil dari function akan mendapatkan token, token ini yang akan digunakan untuk 
 <img src="https://i.ibb.co/nR4jmsX/image.png" alt="Gambar header sebelum menggunakan item">
 
 **Sesudah menggunakan token**
-<img src="https://i.ibb.co/568CNg9/image.png" alt="Gambar header susudah menggunakan token">
+<img src="https://i.ibb.co/mTRDwyX/image.png" alt="Gambar header susudah menggunakan token">
 
 dibagian menggunakan token pada bagian *authorization* untuk value harus menggunakan kata kunci *Bearer* + token seperti contoh *Bearer 1|Jc2Rf9iJC0FmJSjF1e8QLkKVSQ5Frme1Ihe8pdoe*      
 
