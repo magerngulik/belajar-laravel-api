@@ -234,6 +234,6 @@ fungsi ini sendiri adalah bawaan dari laravel sanctum, untuk dokumentasi nya dap
 - langkah selanjutnya adalah melakukan request dari sisi user, request ini mengunakan method get dan hanya menggirimkan accept dan authorization berupa token yang berfungsi untuk melakukan revoking pada token yang sedang di akses, contoh nya sebagai berikut:
 <img src="https://i.ibb.co/C7swVP1/image.png" alt="Contoh reques dari logout">
 
-
-
+## Mengambil data user yang sedang login
+- buat dulu controller
 

@@ -11,6 +11,7 @@ Route::get('/posts2/{id}', [PostController::class, 'show2']);
 
 Route::post('/login', [AuthentificationController::class, 'login']);
 Route::post('/logout', [AuthentificationController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/userprofile', [AuthentificationController::class, 'userprofile'])->middleware('auth:sanctum');
 
 
 

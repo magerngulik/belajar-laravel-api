@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthentificationController extends Controller
@@ -19,10 +20,24 @@ class AuthentificationController extends Controller
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
-        return $user->createToken('user login')->plainTextToken;
+        $data = 
+        [
+            "data" => $user,
+            "token" => $user->createToken('user login')->plainTextToken 
+        ];
+
+        return  response()->json($data, 200);
+
     }
 
     function logout(Request $request){
         $request->user()->currentAccessToken()->delete();
+    }
+
+    function userprofile(Request $request){
+        $data = [
+            "data" => Auth::user()
+        ];
+        return response()->json($data, 200);
     }
 }
